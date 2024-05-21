@@ -19,18 +19,26 @@ formRoutes.route('/add').post(function(req, res){
  
 //api to get form
 formRoutes.route('/getall').get(function(req,res){
-    Form.find(function(err, form){
-        if (err) {
-            res.status(400).send({'status': 'failure', 'mssg': 'Something went wrong '});
-        }
-        else{
-            res.status(200).json({'status': 'success', 'forms': forms});
-        }
+    try {
+        const forms = Form.find();
+        res.status(200).json({ 'status': 'success', 'forms': forms });
+    } catch (err) {
+        res.status(400).json({ 'status': 'failure', 'msg': 'Something went wrong' });
+    };
+
+    // const forms = Form.find();
+    //     if (err) {
+    //         res.status(400).json({'status': 'failure', 'mssg': 'Something went wrong '});
+    //     }
+    //     else{
+    //         res.status(200).json({'status': 'success', 'forms': forms});
+    //     }
     });
-});
+
+
  
 //api to get form
-formRoutes.route('/form/:id').get(function(req,res){
+formRoutes.route('/:id').get(function(req,res){
     let id = req.params.id;
     Form.findById(id, function (err, form){
         if (err) {
